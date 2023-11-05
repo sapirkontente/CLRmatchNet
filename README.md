@@ -8,37 +8,32 @@
 </div>
 
 
-Pytorch implementation of the paper "[CLRmatchNet: Enhancing Curved Lane Detection with Deep Matching Process. Sapir Kontente, Roy Orfaig and Ben-Zion Bobrovsky, Tel-Aviv University](https://arxiv.org/pdf/2309.15204v1)"
+Pytorch implementation of the paper "[CLRmatchNet: Enhancing Curved Lane Detection with Deep Matching Process.](https://arxiv.org/pdf/2309.15204v1)" Sapir Kontente, Roy Orfaig and Ben-Zion Bobrovsky, Tel-Aviv University
 
 ## Introduction
-![Arch](.github/clrmatchnet.jpg)
-![Arch](.github/matchnet.jpg)
 
-- CLRmatchNet introduces an approach that aims to enhance models’ performance by utilizing a deep-learning-based label
-assignment model to overcome the limitations of classical cost functions.
-- CLRmatchNet focused on enhancing the detection capability of curved lanes. 
+![clrmatchnet](.github/clrmatchnet.jpg)
+![matchnet](.github/matchnet.jpg)
 
-## Installation
+Our research introduces MatchNet, a deep learning sub-module-based approach aimed at enhancing the label assignment process. 
+Integrated into the state-of-the-art lane detection network Cross Layer Refinement Network for Lane Detection (CLRNet),
+MatchNet replaces the conventional label assignment process with a sub-module network. 
+This integration results in significant improvements in scenarios involving curved lanes, with remarkable improvement across all backbones.
 
-### Prerequisites
-Only test on Ubuntu18.04 and 20.04 with:
+## Getting Started
+
+### Environment Setup
+Ubuntu18.04 and 20.04 with:
 - Python >= 3.8 (tested with Python3.8)
 - PyTorch >= 1.7 (tested with Pytorch1.7)
 - CUDA (tested with cuda11)
 - Other dependencies described in `requirements.txt` 
 
-### Clone this repository
-Clone this code to your workspace. 
-We call this directory as `$CLRNET_ROOT`
-```Shell
-git clone https://github.com/sapirkontente/CLRmatchNet.git
-```
-
-### Create a conda virtual environment and activate it (conda is optional)
+### Conda Virtual Environment
 
 ```Shell
-conda create -n clrnet python=3.8 -y 
-conda activate clrnet
+conda create -n clrmatchnet python=3.8 -y 
+conda activate clrmatchnet
 ```
 
 ### Install dependencies
@@ -55,15 +50,14 @@ python setup.py build develop
 ```
 
 
-
-### Data preparation
+### Data
 
 #### CULane
 
 Download [CULane](https://xingangpan.github.io/projects/CULane.html). Then extract them to `$CULANEROOT`. Create link to `data` directory.
 
 ```Shell
-cd $CLRNET_ROOT
+cd $CLRMATCHNET_ROOT
 mkdir -p data
 ln -s $CULANEROOT data/CULane
 ```
@@ -75,54 +69,72 @@ $CULANEROOT/laneseg_label_w16    # lane segmentation labels
 $CULANEROOT/list                 # data lists
 ```
 
-## Getting Started
-We use a pretrained CLRNet model as our baseline for training, for 
-### Training MatchNet
-For training matchnet, use a pretrained CLRNet model and run
+## Train
+We use a pretrained CLRNet model as our baseline for training. Please download [CLRNet models](https://github.com/turoad/CLRNet/releases) and extract them to 'PRETRAINED_CLRNET" 
+
 ```Shell
-python main.py [configs/path_to_your_config] --gpus [gpu_num] --finetune_from [releases/path_to_CLRNet_ckp] --train_matchnet [True]
+cd $CLRMATCHNET_ROOT
+mkdir pretrained_clrnet
+cd pretrained_clrnet
+
+gdown https://github.com/Turoad/CLRNet/releases/download/models/culane_r101.pth.zip
+unzip culane_r101.pth.zip
+
+gdown https://github.com/Turoad/CLRNet/releases/download/models/culane_r34.pth.zip
+unzip culane_r34.pth.zip
+
+gdown https://github.com/Turoad/CLRNet/releases/download/models/culane_dla34.pth.zip
+unzip culane_dla34.pth.zip
+```
+
+### Training MatchNet
+For training matchnet, run
+```Shell
+python main.py [configs/path_to_your_config] --gpus [gpu_num] --finetune_from [pretrained_clrnet/path_to_CLRNet_ckp] --train_matchnet [True]
 ```
 
 For example, run
 ```Shell
-python main.py configs/clrnet/clr_resnet101_culane.py --gpus=2 --finetune_from=releases/culane_resnet101.pth --train_matchnet=True
+python main.py configs/clrnet/clr_resnet101_culane.py --gpus=2 --finetune_from=pretrained_clrnet/culane_resnet101.pth --train_matchnet=True
 ```
+
+The trained models will be saved into `matchnet/ckp/epoch.pth`.
 
 ### Training CLRmatchNet
-For training CLRmatchNet, use your pretrained matchnet ckp and a pretrained CLRNet model and run
+For training CLRmatchNet, use the pretrained matchnet model and run
 ```Shell
-python main.py [configs/path_to_your_config] --gpus [gpu_num] --finetune_from [releases/path_to_CLRNet_ckp] --train_matchnet [False] --matchnet_ckp [matchnet/ckp/path_to_your_matchnet_ckp]
+python main.py [configs/path_to_your_config] --gpus [gpu_num] --finetune_from [pretrained_clrnet/path_to_CLRNet_ckp] --train_matchnet [False] --matchnet_ckp [matchnet.pth]
 ```
 
 For example, run
 ```Shell
-python main.py configs/clrnet/clr_resnet101_culane.py --gpus=1 --finetune_from=releases/culane_resnet101.pth --train_matchnet=False --matchnet_ckp=matchnet/ckp/matchnet.pth
+python main.py configs/clrnet/clr_resnet101_culane.py --gpus=1 --finetune_from=pretrained_clrnet/culane_resnet101.pth --train_matchnet=False --matchnet_ckp=releases/matchnet.pth
 ```
 
 
 ### Validation
-For testing CLRmatchNet, run
+For testing CLRmatchNet, use the pretrained CLRmatchNet model and run
 ```Shell
-python main.py [configs/path_to_your_config] --[test|validate|demo] --load_from [releases/path_to_your_model] --gpus [gpu_num]
+python main.py [configs/path_to_your_config] --[test|validate|demo] --load_from [path_to_clrmatchnet_model] --gpus [gpu_num]
 ```
 
 For example, run
 ```Shell
-python main.py configs/clrnet/clr_dla34_culane.py --test --load_from=releases/culane_dla34.pth --gpus=1
+python main.py configs/clrnet/clr_dla34_culane.py --test --load_from=culane_dla34.pth --gpus=1
 ```
 
-Currently, this code can output the visualization result when testing, just add `--view`.
+This code can output the visualization result when testing, just add `--view`.
 We will get the visualization result in `work_dirs/xxx/xxx/xxx/visualization`.
 
 ### Demo
 For demonstration of CLRmatchNet results, run
 ```Shell
-python main.py [configs/path_to_your_config] --[demo] --load_from [releases/path_to_your_model] --gpus [gpu_num] --view
+python main.py [configs/path_to_your_config] --demo --load_from [path_to_clrmatchnet_model] --gpus [gpu_num] --view
 ```
 
 For example, run
 ```Shell
-python main.py configs/clrnet/clr_resnet101_culane.py --demo --load_from=releases/culane_resnet101.pth --gpus=1 --view
+python main.py configs/clrnet/clr_resnet101_culane.py --demo --load_from=culane_resnet101.pth --gpus=1 --view
 ```
 
 [assets]: https://github.com/sapirkontetne/CLRmatchNet/releases

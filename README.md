@@ -77,13 +77,13 @@ cd $CLRMATCHNET_ROOT
 mkdir pretrained_clrnet
 cd pretrained_clrnet
 
-gdown https://github.com/Turoad/CLRNet/releases/download/models/culane_r101.pth.zip
+wget https://github.com/Turoad/CLRNet/releases/download/models/culane_r101.pth.zip
 unzip culane_r101.pth.zip
 
-gdown https://github.com/Turoad/CLRNet/releases/download/models/culane_r34.pth.zip
+wget https://github.com/Turoad/CLRNet/releases/download/models/culane_r34.pth.zip
 unzip culane_r34.pth.zip
 
-gdown https://github.com/Turoad/CLRNet/releases/download/models/culane_dla34.pth.zip
+wget https://github.com/Turoad/CLRNet/releases/download/models/culane_dla34.pth.zip
 unzip culane_dla34.pth.zip
 ```
 

@@ -137,6 +137,8 @@ For example, run
 python main.py configs/clrnet/clr_resnet101_culane.py --demo --load_from=culane_resnet101.pth --gpus=1 --view
 ```
 
+Results can be found in `work_dirs/xxx/xxx/demo/visualization`.
+
 [assets]: https://github.com/sapirkontetne/CLRmatchNet/releases
 
 ## Results

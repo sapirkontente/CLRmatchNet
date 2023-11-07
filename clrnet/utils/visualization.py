@@ -78,12 +78,13 @@ def imshow_lanes(img, lanes, conf, show=False, out_file=None, width=4):
             xys.append((x, y))
         lanes_xys.append(xys)\
             
+    sorted_conf = [conf[i] for i in sorted(range(len(conf)), key=lambda x: lanes_xys[x][0][0])]
     lanes_xys.sort(key=lambda xys : xys[0][0])
 
     for idx, xys in enumerate(lanes_xys):
+        img = add_conf(str(round(sorted_conf[idx],2)), COLORS[idx], idx*40, img)
         for i in range(1, len(xys)):
             cv2.line(img, xys[i - 1], xys[i], COLORS[idx], thickness=width)
-            img = add_conf(str(round(conf[idx].item(),2)), COLORS[idx], idx*40, img)
 
 
     if show:

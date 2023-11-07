@@ -291,6 +291,8 @@ class CLRHead(nn.Module):
         '''
         self.prior_ys = self.prior_ys.to(predictions.device)
         self.prior_ys = self.prior_ys.double()
+        softmax = nn.Softmax(dim=0)
+
         lanes = []
         for lane in predictions:
             lane_xs = lane[6:]  # normalized value
@@ -322,7 +324,7 @@ class CLRHead(nn.Module):
                         metadata={
                             'start_x': lane[3],
                             'start_y': lane[2],
-                            'conf': lane[1]
+                            'conf': softmax(lane[:2])[1].item()
                         })
             lanes.append(lane)
         return lanes
@@ -480,7 +482,6 @@ class CLRHead(nn.Module):
         softmax = nn.Softmax(dim=1)
 
         decoded = []
-        conf = []
         for predictions in output:
             # filter out the conf lower than conf threshold
             threshold = self.cfg.test_parameters.conf_threshold
@@ -517,6 +518,5 @@ class CLRHead(nn.Module):
             else:
                 pred = predictions
             decoded.append(pred)
-            conf.append(scores[keep])
 
-        return decoded, conf
+        return decoded

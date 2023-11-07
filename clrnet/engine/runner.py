@@ -127,10 +127,10 @@ class Runner(object):
             data = self.to_cuda(data)
             with torch.no_grad():
                 output = self.net(data)
-                output, conf = self.net.module.heads.get_lanes(output)
+                output = self.net.module.heads.get_lanes(output)
                 predictions.extend(output)
             if self.cfg.view:
-                self.test_loader.dataset.view(output, data['meta'], conf)
+                self.test_loader.dataset.view(output, data['meta'])
 
         metric = self.test_loader.dataset.evaluate(predictions,
                                                    self.cfg.work_dir)
@@ -149,15 +149,10 @@ class Runner(object):
             data = self.to_cuda(data)
             with torch.no_grad():
                 output = self.net(data)
-                output, conf = self.net.module.heads.get_lanes(output)
+                output = self.net.module.heads.get_lanes(output)
                 predictions.extend(output)
             if self.cfg.view:
-                self.test_loader.dataset.view(output, data['meta'], conf)
-
-        metric = self.test_loader.dataset.evaluate(predictions,
-                                                   self.cfg.work_dir, demo=True)
-        if metric is not None:
-            self.recorder.logger.info('metric: ' + str(metric))
+                self.test_loader.dataset.view(output, data['meta'])
 
     def validate(self):
         if not self.val_loader:
@@ -170,10 +165,10 @@ class Runner(object):
             data = self.to_cuda(data)
             with torch.no_grad():
                 output = self.net(data)
-                output, conf = self.net.module.heads.get_lanes(output)
+                output = self.net.module.heads.get_lanes(output)
                 predictions.extend(output)
             if self.cfg.view:
-                self.val_loader.dataset.view(output, data['meta'], conf)
+                self.val_loader.dataset.view(output, data['meta'])
 
         metric = self.val_loader.dataset.evaluate(predictions,
                                                   self.cfg.work_dir)

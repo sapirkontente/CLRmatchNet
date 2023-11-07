@@ -139,7 +139,7 @@ python main.py configs/clrnet/clr_resnet101_culane.py --demo --load_from=culane_
 
 Results can be found in `work_dirs/xxx/xxx/demo/visualization`.
 
-[assets]: https://github.com/sapirkontetne/CLRmatchNet/releases
+[assets]: https://github.com/sapirkontente/CLRmatchNet/releases/tag/models
 
 ## Results
 

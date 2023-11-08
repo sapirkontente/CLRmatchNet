@@ -113,12 +113,12 @@ The trained model will be saved into `matchnet/ckp/epoch.pth`.
 ### Training CLRmatchNet
 For training CLRmatchNet, use the pretrained matchnet model and run
 ```Shell
-python main.py [configs/path_to_your_config] --gpus [gpu_num] --finetune_from [pretrained_clrnet/path_to_CLRNet_ckp] --train_matchnet [False] --matchnet_ckp [matchnet.pth]
+python main.py [configs/path_to_your_config] --gpus [gpu_num] --finetune_from [pretrained_clrnet/path_to_CLRNet_ckp] --matchnet_ckp [matchnet.pth]
 ```
 
 For example, run
 ```Shell
-python main.py configs/clrnet/clr_resnet101_culane.py --gpus=1 --finetune_from=pretrained_clrnet/culane_resnet101.pth --train_matchnet=False --matchnet_ckp=releases/matchnet.pth
+python main.py configs/clrnet/clr_resnet101_culane.py --gpus=1 --finetune_from=pretrained_clrnet/culane_resnet101.pth --matchnet_ckp=releases/matchnet.pth
 ```
 
 

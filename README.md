@@ -100,12 +100,12 @@ Please note, we utilized Resnet101 as the backbone for training MatchNet and the
 
 For training matchnet, run
 ```Shell
-python main.py [configs/path_to_your_config] --gpus [gpu_num] --finetune_from [pretrained_clrnet/path_to_CLRNet_ckp] --train_matchnet [True]
+python main.py [configs/path_to_your_config] --gpus [gpu_num] --finetune_from [pretrained_clrnet/path_to_CLRNet_ckp] --train_matchnet
 ```
 
 For example, run
 ```Shell
-python main.py configs/clrnet/clr_resnet101_culane.py --gpus=2 --finetune_from=pretrained_clrnet/culane_resnet101.pth --train_matchnet=True
+python main.py configs/clrnet/clr_resnet101_culane.py --gpus=2 --finetune_from=pretrained_clrnet/culane_resnet101.pth --train_matchnet
 ```
 
 The trained model will be saved into `matchnet/ckp/epoch.pth`.

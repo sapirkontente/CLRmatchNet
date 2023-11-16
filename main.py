@@ -90,8 +90,8 @@ def parse_args():
     parser.add_argument('--gpus', nargs='+', type=int, default='0')
     parser.add_argument('--seed', type=int, default=0, help='random seed')
     parser.add_argument('--train_matchnet',
-            default=False,
-            help='If True, train matchnet. Else (default), use matchnet as the label assignment method')
+            action='store_true',
+            help='whether to train matchnet (true) or to use matchnet as the label assignment method in CLRmatchNet train')
     parser.add_argument('--matchnet_ckp',
             default=None,
             help='The matchnet checkpoint file to load from and use matchnet as the label assignment method')

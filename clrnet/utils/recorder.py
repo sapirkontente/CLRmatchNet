@@ -59,9 +59,6 @@ class Recorder(object):
         self.max_iter = self.cfg.total_iter
         self.lr = 0.
 
-        if self.cfg.train_matchnet:
-            self.matchnet_loss = defaultdict(SmoothedValue)
-
 
     def save_cfg(self, cfg):
         cfg_path = os.path.join(self.work_dir, 'config.py')

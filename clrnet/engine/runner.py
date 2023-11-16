@@ -74,7 +74,8 @@ class Runner(object):
                 self.scheduler.step()
             
             if self.cfg.train_matchnet: # matchnet train
-                self.matchnet.train_batch(data, output, output_predictions)
+                matchnet_loss = self.matchnet.train_batch(data, output, output_predictions)
+                output['loss_stats'].update({'matchnet_loss':matchnet_loss})
 
             batch_time = time.time() - end
             end = time.time()

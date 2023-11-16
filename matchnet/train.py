@@ -139,4 +139,4 @@ class TrainMatchNet():
         if not self.cfg.lr_update_by_epoch:
             self.scheduler.step()
         
-        self.recorder.matchnet_loss.update(loss)
+        return loss

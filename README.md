@@ -10,11 +10,9 @@ Pytorch implementation of the paper "[CLRmatchNet: Enhancing Curved Lane Detecti
 Sapir Kontente, Roy Orfaig and Ben-Zion Bobrovsky, Tel-Aviv University
 
 ## Introduction
-
-Our research introduces MatchNet, a deep learning sub-module-based approach aimed at enhancing the label assignment process. 
-Integrated into the state-of-the-art lane detection network Cross Layer Refinement Network for Lane Detection (CLRNet),
-MatchNet replaces the conventional label assignment process with a sub-module network. 
-This integration results in significant improvements in scenarios involving curved lanes, with remarkable improvement across all backbones.
+- We present MatchNet, a deep learning sub-module-based model that replaces the classic label assignment method used in state-of-the-art models.
+- Integrated into the state-of-the-art lane detection network, Cross Layer Refinement Network for Lane Detection (CLRNet), our model CLRmatchNet, has substantial improvements in scenarios involving curved lanes, with remarkable improvement across all backbones of +2.8\% for ResNet34, +2.3\% for ResNet101, and +2.96\% for DLA34
+- This paper will be presented at the coming IMVC 2024 conference, join us!
 
 ### CLRmatchNet Architecture
 
